@@ -55,4 +55,29 @@ export class CashService {
   async getSelectedCurrency(): Promise<string> {
     return this.storage.get('selected-currency');
   }
+
+  async getGroupedTransactions() {
+    const transactions = await this.getTransactions();
+
+    const resultObject = {};
+
+    for (const transaction of transactions) {
+      if (resultObject[transaction.category.name]) {
+        resultObject[transaction.category.name].transactions.push(transaction);
+      } else {
+        resultObject[transaction.category.name] = { icon: transaction.category.icon, transactions: [transaction] };
+      }
+    }
+
+    const result = [];
+    Object.keys(resultObject).forEach((category) => {
+      result.push({
+        category,
+        icon: resultObject[category].icon,
+        transactions: resultObject[category].transactions
+      });
+    });
+
+    return result;
+  }
 }

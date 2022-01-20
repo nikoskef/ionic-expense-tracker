@@ -12,7 +12,8 @@ import { ExpenseModalPage } from '../expense-modal/expense-modal.page';
 export class TrackerPage implements OnInit, ViewWillEnter {
   transactions: Transaction[] = [];
   selectedCurrency = '';
-  selectedView = 'all';
+  selectedView = 'grouped';
+  transactionGroups = [];
 
   constructor(private modalCtrl: ModalController, private cashService: CashService) {}
 
@@ -40,5 +41,7 @@ export class TrackerPage implements OnInit, ViewWillEnter {
   async loadTransactions() {
     this.transactions = await this.cashService.getTransactions();
     this.selectedCurrency = await this.cashService.getSelectedCurrency();
+    this.transactionGroups = await this.cashService.getGroupedTransactions();
+    console.log(this.transactionGroups);
   }
 }

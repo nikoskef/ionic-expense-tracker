@@ -34,4 +34,23 @@
       </ion-text>
     </ion-item>
   </ion-list>
+
+  <ion-accordion-group *ngIf="selectedView === 'grouped'">
+    <ion-accordion *ngFor="let group of transactionGroups">
+      <ion-item slot="header">
+        <ion-icon slot="start" [name]="group.icon" color="primary"></ion-icon>
+        <ion-label>{{ group.category }}</ion-label>
+      </ion-item>
+
+      <ion-list slot="content">
+        <ion-item *ngFor="let transaction of group.transactions">
+          <ion-label>
+            {{ transaction.value | currency: (selectedCurrency | uppercase):"symbol" }}
+            <p>{{ transaction.title }}</p>
+          </ion-label>
+          <p slot="end">{{ transaction.createdAt | date: "MMM dd" }}</p>
+        </ion-item>
+      </ion-list>
+    </ion-accordion>
+  </ion-accordion-group>
 </ion-content>
