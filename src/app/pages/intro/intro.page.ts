@@ -2,6 +2,8 @@ import Swiper, { Pagination, SwiperOptions } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
 
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage-angular';
 
 Swiper.use([Pagination]);
 
@@ -19,7 +21,7 @@ export class IntroPage implements OnInit {
     pagination: true
   };
 
-  constructor() {}
+  constructor(private storage: Storage, private router: Router) {}
 
   ngOnInit() {}
 
@@ -27,5 +29,9 @@ export class IntroPage implements OnInit {
     this.swiper.swiperRef.slideNext();
   }
 
-  saveAndStart() {}
+  async saveAndStart() {
+    await this.storage.set('seen-intro', true);
+    await this.storage.set('selected-currency', this.currency);
+    this.router.navigateByUrl('/', { replaceUrl: true });
+  }
 }
