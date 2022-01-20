@@ -17,6 +17,10 @@ const routes: Routes = [
     path: '',
     redirectTo: 'menu',
     pathMatch: 'full'
+  },
+  {
+    path: 'expense-modal',
+    loadChildren: () => import('./pages/expense-modal/expense-modal.module').then( m => m.ExpenseModalPageModule)
   }
 ];
 
