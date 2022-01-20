@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Storage } from '@ionic/storage-angular';
+
+const TRANSACTION_KEY = 'transactions';
 
 export enum CashFlow {
   expense = 0,
@@ -20,7 +23,7 @@ export interface Transaction {
 
 @Injectable({ providedIn: 'root' })
 export class CashService {
-  constructor() {}
+  constructor(private storage: Storage) {}
 
   getCategories(): Category[] {
     return [
@@ -31,5 +34,21 @@ export class CashService {
       { name: 'Education', icon: 'school' },
       { name: 'Travel', icon: 'airplane' }
     ];
+  }
+
+  async addTransaction(transaction: Transaction) {
+    const transactions = await this.getTransactions();
+    transactions.push(transaction);
+    console.log('SAVE THIS: ', transactions);
+    return this.storage.set(TRANSACTION_KEY, transactions);
+  }
+
+  async getTransactions(): Promise<Transaction[]> {
+    const transactions: Transaction[] | null = await this.storage.get(TRANSACTION_KEY);
+
+    if (transactions) {
+      return transactions.sort((trans, trans2) => trans2.createdAt - trans.createdAt);
+    }
+    return [];
   }
 }

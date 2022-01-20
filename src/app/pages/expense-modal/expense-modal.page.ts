@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 
 import { CashFlow, CashService, Transaction } from '../../services/cash.service';
 
@@ -20,7 +20,11 @@ export class ExpenseModalPage implements OnInit {
     category: this.categories[0]
   };
 
-  constructor(private cashService: CashService, private modalCtrl: ModalController) {}
+  constructor(
+    private cashService: CashService,
+    private modalCtrl: ModalController,
+    private toastCtrl: ToastController
+  ) {}
 
   ngOnInit() {}
 
@@ -28,7 +32,21 @@ export class ExpenseModalPage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  addTransaction() {
-    console.log('store: ', this.transaction);
+  async addTransaction() {
+    this.transaction.createdAt = new Date(this.createdAt).getTime();
+    this.transaction.type = +this.transaction.type;
+
+    if (this.transaction.type === CashFlow.income) {
+      this.transaction.category = { name: 'Income', icon: 'cash' };
+    }
+
+    await this.cashService.addTransaction(this.transaction);
+    const toast = await this.toastCtrl.create({
+      message: 'Transaction saved',
+      duration: 2000
+    });
+
+    await toast.present();
+    this.modalCtrl.dismiss({ reload: true });
   }
 }

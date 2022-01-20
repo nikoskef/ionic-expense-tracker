@@ -23,6 +23,8 @@ export class TrackerPage implements OnInit {
     modal.present();
 
     const { data } = await modal.onDidDismiss();
-    console.log(data);
+    if (data && data.reload) {
+      // Reload data
+    }
   }
 }
