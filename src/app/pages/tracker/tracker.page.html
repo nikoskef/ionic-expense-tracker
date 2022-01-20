@@ -3,8 +3,16 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>tracker</ion-title>
+    <ion-title>My Finances</ion-title>
   </ion-toolbar>
+  <ion-segment [(ngModel)]="selectedView">
+    <ion-segment-button value="all">
+      <ion-label>All</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="grouped">
+      <ion-label>Grouped</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 </ion-header>
 
 <ion-content>
@@ -13,4 +21,17 @@
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+
+  <ion-list *ngIf="selectedView === 'all'">
+    <ion-item *ngFor="let transaction of transactions">
+      <ion-icon [name]="transaction.category.icon" slot="start"></ion-icon>
+      <ion-label>
+        <h2>{{ transaction.title }}</h2>
+        <h2>{{ transaction.createdAt | date: "MMM dd" }}</h2>
+      </ion-label>
+      <ion-text [color]="transaction.type ? 'success' : 'danger'">
+        {{ transaction.value | currency: (selectedCurrency | uppercase):"symbol" }}
+      </ion-text>
+    </ion-item>
+  </ion-list>
 </ion-content>

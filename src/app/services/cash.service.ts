@@ -51,4 +51,8 @@ export class CashService {
     }
     return [];
   }
+
+  async getSelectedCurrency(): Promise<string> {
+    return this.storage.get('selected-currency');
+  }
 }
