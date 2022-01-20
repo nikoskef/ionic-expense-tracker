@@ -32,6 +32,6 @@ export class IntroPage implements OnInit {
   async saveAndStart() {
     await this.storage.set('seen-intro', true);
     await this.storage.set('selected-currency', this.currency);
-    this.router.navigateByUrl('/', { replaceUrl: true });
+    this.router.navigateByUrl('/menu', { replaceUrl: true });
   }
 }
