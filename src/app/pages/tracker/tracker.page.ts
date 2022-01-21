@@ -42,6 +42,11 @@ export class TrackerPage implements OnInit, ViewWillEnter {
     this.transactions = await this.cashService.getTransactions();
     this.selectedCurrency = await this.cashService.getSelectedCurrency();
     this.transactionGroups = await this.cashService.getGroupedTransactions();
-    console.log(this.transactionGroups);
+  }
+
+  async removeTransaction(index: number) {
+    this.transactions.splice(index, 1);
+    await this.cashService.updateTransactions(this.transactions);
+    this.loadTransactions();
   }
 }

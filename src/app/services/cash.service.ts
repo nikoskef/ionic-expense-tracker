@@ -39,7 +39,6 @@ export class CashService {
   async addTransaction(transaction: Transaction) {
     const transactions = await this.getTransactions();
     transactions.push(transaction);
-    console.log('SAVE THIS: ', transactions);
     return this.storage.set(TRANSACTION_KEY, transactions);
   }
 
@@ -79,5 +78,9 @@ export class CashService {
     });
 
     return result;
+  }
+
+  updateTransactions(transactions) {
+    return this.storage.set(TRANSACTION_KEY, transactions);
   }
 }

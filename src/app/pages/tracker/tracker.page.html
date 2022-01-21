@@ -23,16 +23,23 @@
   </ion-fab>
 
   <ion-list *ngIf="selectedView === 'all'">
-    <ion-item *ngFor="let transaction of transactions">
-      <ion-icon [name]="transaction.category.icon" slot="start"></ion-icon>
-      <ion-label>
-        <h2>{{ transaction.title }}</h2>
-        <h2>{{ transaction.createdAt | date: "MMM dd" }}</h2>
-      </ion-label>
-      <ion-text [color]="transaction.type ? 'success' : 'danger'">
-        {{ transaction.value | currency: (selectedCurrency | uppercase):"symbol" }}
-      </ion-text>
-    </ion-item>
+    <ion-item-sliding *ngFor="let transaction of transactions; let i = index">
+      <ion-item>
+        <ion-icon [name]="transaction.category.icon" slot="start"></ion-icon>
+        <ion-label>
+          <h2>{{ transaction.title }}</h2>
+          <h2>{{ transaction.createdAt | date: "MMM dd" }}</h2>
+        </ion-label>
+        <ion-text [color]="transaction.type ? 'success' : 'danger'">
+          {{ transaction.value | currency: (selectedCurrency | uppercase):"symbol" }}
+        </ion-text>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="removeTransaction(i)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
 
   <ion-accordion-group *ngIf="selectedView === 'grouped'">
