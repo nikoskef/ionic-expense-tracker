@@ -24,7 +24,7 @@
 
   <ion-list *ngIf="selectedView === 'all'">
     <ion-item-sliding *ngFor="let transaction of transactions; let i = index">
-      <ion-item>
+      <ion-item routerLink="/details" [state]="{ transaction }">
         <ion-icon [name]="transaction.category.icon" slot="start"></ion-icon>
         <ion-label>
           <h2>{{ transaction.title }}</h2>
