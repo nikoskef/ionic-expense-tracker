@@ -47,6 +47,6 @@ export class TrackerPage implements OnInit, ViewWillEnter {
   async removeTransaction(index: number) {
     this.transactions.splice(index, 1);
     await this.cashService.updateTransactions(this.transactions);
-    this.loadTransactions();
+    await this.loadTransactions();
   }
 }

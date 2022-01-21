@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 
 const TRANSACTION_KEY = 'transactions';
+const SELECTED_CURRENCY_KEY = 'selected-currency';
 
 export enum CashFlow {
   expense = 0,
@@ -51,10 +52,6 @@ export class CashService {
     return [];
   }
 
-  async getSelectedCurrency(): Promise<string> {
-    return this.storage.get('selected-currency');
-  }
-
   async getGroupedTransactions() {
     const transactions = await this.getTransactions();
 
@@ -80,7 +77,23 @@ export class CashService {
     return result;
   }
 
-  updateTransactions(transactions) {
+  updateTransactions(transactions: Transaction[]): Promise<void> {
     return this.storage.set(TRANSACTION_KEY, transactions);
+  }
+
+  async getSelectedCurrency(): Promise<string> {
+    return this.storage.get(SELECTED_CURRENCY_KEY);
+  }
+
+  updateCurrency(selected: string): Promise<void> {
+    return this.storage.set(SELECTED_CURRENCY_KEY, selected);
+  }
+
+  clearData(): Promise<void> {
+    return this.storage.clear();
+  }
+
+  resetIntro(): Promise<void> {
+    return this.storage.remove('seen-intro');
   }
 }
